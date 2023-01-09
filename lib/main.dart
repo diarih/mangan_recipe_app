@@ -4,12 +4,12 @@ import 'package:mangan_recipe_app/home.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
 
-  await Supabase.initialize(
-    url: Constants.supabaseUrl,
-    anonKey: Constants.supabaseAnnonKey,
-  );
+  // await Supabase.initialize(
+  //   url: Constants.supabaseUrl,
+  //   anonKey: Constants.supabaseAnnonKey,
+  // );
   runApp(const MyApp());
 }
 

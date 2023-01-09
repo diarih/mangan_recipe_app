@@ -10,16 +10,16 @@ class RecipePage extends StatefulWidget {
 }
 
 class _RecipePageState extends State<RecipePage> {
-  late Future<Persons?> movieList;
+  late Future<Persons?> recipeList;
 
   @override
   void initState() {
     super.initState();
-    updateMovie();
+    recipe();
   }
 
-  updateMovie() {
-    movieList = PersonsService.getPersons();
+  recipe() {
+    recipeList = PersonsService.getPersons();
   }
 
   @override
@@ -33,36 +33,46 @@ class _RecipePageState extends State<RecipePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(10, (index) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Colors.grey.withOpacity(0.4),
-                ),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-              ),
-              clipBehavior: Clip.antiAlias,
-              elevation: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Image.asset('assets/recipe.png',
-                        fit: BoxFit.cover, height: 120),
-                    SizedBox(height: 8),
-                    Text('Recipe $index',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    SizedBox(height: 8),
-                    Text('by John Doe'),
-                  ],
-                ),
-              ),
-            );
-          }),
-        ),
+        child: FutureBuilder<Persons?>(
+            future: recipeList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return GridView.count(
+                  crossAxisCount: 2,
+                  children: List.generate(3, (index) {
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          color: Colors.grey.withOpacity(0.4),
+                        ),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(8)),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Image.asset('assets/recipe.png',
+                                fit: BoxFit.cover, height: 120),
+                            SizedBox(height: 8),
+                            Text('Recipe $index',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            SizedBox(height: 8),
+                            Text('by John Doe'),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return const CircularProgressIndicator();
+            }),
       ),
     );
   }

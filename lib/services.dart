@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 import 'persons_model.dart';
@@ -8,11 +10,14 @@ abstract class PersonsService {
       var response = await Dio().get('https://swapi.dev/api/people');
 
       if (response.statusCode == 200) {
-        return Persons.fromJson(response.data);
+        print(response.data);
+        var res = Persons.fromJson(jsonDecode(response.data));
+        print(res.total);
+        return Persons.fromJson(jsonDecode(response.data));
       }
-      return null;
     } catch (e) {
       throw Exception(e.toString());
     }
+    return null;
   }
 }
