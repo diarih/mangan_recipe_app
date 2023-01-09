@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mangan_recipe_app/constants.dart';
 import 'package:mangan_recipe_app/home.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: Constants.supabaseUrl,
+    anonKey: Constants.supabaseAnnonKey,
+  );
   runApp(const MyApp());
 }
 

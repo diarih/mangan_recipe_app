@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mangan_recipe_app/account_page.dart';
+import 'package:mangan_recipe_app/home_page.dart';
+import 'package:mangan_recipe_app/navigation_bar.dart';
+import 'package:mangan_recipe_app/recipe_page.dart';
+
+typedef TapNav = void Function(int value);
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,62 +14,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _widgetOptions = <Widget>[
+    const HomeScreen(),
+    const RecipePage(),
+    const AccountPage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-      ),
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              const Text('Home Page'),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/about');
-                },
-                child: const Text('About'),
-              ),
-            ],
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Drawer Header'),
-            ),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
+      body: Container(
+          alignment: Alignment.center,
+          child: _widgetOptions.elementAt(_selectedIndex)),
+      bottomNavigationBar: NavBar(
+        selectedIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
